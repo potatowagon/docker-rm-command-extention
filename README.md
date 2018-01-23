@@ -23,5 +23,5 @@ path/to/dAll.sh -e <image>
 ``` 
  Removes all containers except `<image>` </br>
  eg. </br>
- `./dAll.sh -e ubutu`  
+ `./dAll.sh -e ubuntu`  
 
