@@ -6,15 +6,6 @@ dockerContainers1=$(docker container ls --all | awk '{print $1}')
 toDelete="CONTAINER"
 dockerContainers2=${dockerContainers1#$toDelete}
 
-echo -e "\n"
-test="$(echo "1\n2\n3\n4")"
-mapfile -t arr < <$test
-echo "arr no ${#arr[@]}"
-for e in "${arr[@]}"
-do
-	echo "$e"
-done
-
 if [ "$1" == "" ]
 then    
 	docker container rm $dockerContainers2
@@ -24,11 +15,9 @@ else
 		printf "Invalid argument. Try \n./$cmdName.sh\nRemove all containers\n\n./$cmdName.sh <image>\nRemove all conatiners of <image>\n\n$./$cmdName.sh -e <image>\nRemove all containers except for containers with <image>" 
 
 	else
-		imageString=$(docker container ls --all | awk '{print $2}')
-		IFS='\n' read -r -a imageArr <<< "$imageString"
-		IFS='\n' read -r -a dockerContainersArr <<< "$dockerContainers1"
-		echo "$dockerContainers1"
-		echo "${#dockerContainersArr[@]}"
+		mapfile -t imageArr < <(docker container ls --all | awk '{print $2}')
+		mapfile -t dockerContainersArr < <(docker container ls --all | awk '{print $1}')
+		#echo "${dockerContainersArr[@]}"
 
 		if [ "$1" == "-e" ]
 		then
@@ -38,12 +27,17 @@ else
 			do
 				if [ "${imageArr[i]}" == "$delExcept" ]
 				then
-					unset "dockerContainersArr[i]"
+					unset dockerContainersArr[i]
 				fi
 			done
-			unset "dockerContainerArr[0]" #remove the string "CONTAINER"
-			dockerConatinersToDel=$( IFS=$' '; echo "${dockerContainersArr[*]}" )
-			docker container rm $dockerConatinerToDel
+			unset dockerContainersArr[0] #remove the string "CONTAINER"
+			if [ ${#dockerContainersArr[@]} -eq 0 ]
+			then
+				echo "No containers to remove"
+			else
+				dockerConatinersToDel=$( IFS=$' '; echo "${dockerContainersArr[*]}" )
+				docker container rm $dockerConatinersToDel
+			fi
 		else
 			del=$1
 			dockerContainersToDel=""
@@ -58,4 +52,7 @@ else
 		fi
 	fi
 fi
+
+echo ""
+docker container ls --all
 
