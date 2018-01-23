@@ -45,7 +45,7 @@ else
 			do
 				if [ "${imageArr[i]}" == "$del" ]
 				then
-					dockerContainersToDel="$dockerConatinersToDel ${dockerContainersArr[i]}"
+					dockerContainersToDel="$dockerContainersToDel ${dockerContainersArr[i]}"
 				fi
 			done
 			docker container rm $dockerContainersToDel
