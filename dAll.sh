@@ -48,7 +48,12 @@ else
 					dockerContainersToDel="$dockerContainersToDel ${dockerContainersArr[i]}"
 				fi
 			done
-			docker container rm $dockerContainersToDel
+			if [ "$dockerContainersToDel" == "" ]
+			then 
+				echo "No containers to remove"
+			else
+				docker container rm $dockerContainersToDel
+			fi
 		fi
 	fi
 fi
