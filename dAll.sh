@@ -2,13 +2,18 @@
 
 cmdName="dAll"
 
-dockerContainers1=$(docker container ls --all | awk '{print $1}')
-toDelete="CONTAINER"
-dockerContainers2=${dockerContainers1#$toDelete}
-
 if [ "$1" == "" ]
-then    
-	docker container rm $dockerContainers2
+then
+	echo "Are you sure you want to remove all containers? (Y/N)"
+	read -n1 ans
+	if [ "$ans" == "y" ] || [ "$ans" == "Y" ]
+	then
+		echo ""
+		dockerContainers1=$(docker container ls --all | awk '{print $1}')
+		toDelete="CONTAINER"
+		dockerContainers2=${dockerContainers1#$toDelete}
+		docker container rm $dockerContainers2
+	fi
 else
 	if [ $# -gt 2 ];
 	then
