@@ -10,9 +10,10 @@ if [ "$1" == "" ]
 then    
 	docker container rm $dockerContainers2
 else
-	if [ $# > 2 ]
+	if [ $# -gt 2 ];
 	then
-		echo "Invalid argument. Try \n./$cmdName.sh\nRemove all containers\n\n./$cmdName.sh <image>\nRemove all conatiners of <image>\n\n$./$cmdName.sh -e <image>\nRemove all containers except for containers with <image>" 
+		printf "Invalid argument. Try \n./$cmdName.sh\nRemove all containers\n\n./$cmdName.sh <image>\nRemove all conatiners of <image>\n\n$./$cmdName.sh -e <image>\nRemove all containers except for containers with <image>" 
+
 	else
 		imageString=$(docker container ls --all | awk '{print $2}')
 		IFS=" " read -r -a imageArr <<< "$imageString"
