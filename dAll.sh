@@ -16,9 +16,34 @@ else
 	else
                 imageString=$(docker container ls -all | awk '{print $2}')
                 IFS=" " read -r -a imageArr <<< "$imageString"
-                read -r -a dockerContainersArr1 <<< "$dockerContainers1"
+                read -r -a dockerContainersArr <<< "$dockerContainers1"
 	
 		if [ "$1" == "-e" ]
+		then
 			shift
 			delExcept=$1
-                	for i in imageArr 
+                	for i in "${!imageArr[@]}"
+			do
+				if [ "${imageArr[i]}" == "$delExcept" ]
+				then
+					unset "dockerContainersArr[i]"
+				fi
+			done
+			unset "dockerContainerArr[0]" #remove the string "CONTAINER"
+			dockerConatinersToDel=$( IFS=$" "; echo "${dockerContainersArr[*]}" )
+			docker container rm $dockerConatinerToDel
+		elif
+		        del=$1
+			dockerContainersToDel=""
+			for i in "${!imageArr[@]}"
+			do
+				if [ "${imageArr[i]}" == "$del" ]
+				then
+					dockerContainersToDel="$dockerConatinersToDel ${dockerContainersArr[i]}"
+				fi
+			done
+			docker container rm $dockerContainersToDel
+		fi
+	fi
+fi
+				
