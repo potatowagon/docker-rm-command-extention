@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cmdName="dAll"
+noContainersToDelMsg="No conatiners to remove"
 
 if [ "$1" == "" ]
 then
@@ -12,7 +13,12 @@ then
 		dockerContainers1=$(docker container ls --all | awk '{print $1}')
 		toDelete="CONTAINER"
 		dockerContainers2=${dockerContainers1#$toDelete}
-		docker container rm $dockerContainers2
+		if [ "$dockerContainers2" == "" ]
+		then
+			echo "$noContainersToDelMsg"
+		else
+			docker container rm $dockerContainers2
+		fi
 	fi
 else
 	if [ $# -gt 2 ];
@@ -38,7 +44,8 @@ else
 			unset dockerContainersArr[0] #remove the string "CONTAINER"
 			if [ ${#dockerContainersArr[@]} -eq 0 ]
 			then
-				echo "No containers to remove"
+				echo "$noContainersToDelMsg"
+
 			else
 				dockerConatinersToDel=$( IFS=$' '; echo "${dockerContainersArr[*]}" )
 				docker container rm $dockerConatinersToDel
@@ -55,7 +62,7 @@ else
 			done
 			if [ "$dockerContainersToDel" == "" ]
 			then 
-				echo "No containers to remove"
+				echo "$noContainersToDelMsg"
 			else
 				docker container rm $dockerContainersToDel
 			fi
