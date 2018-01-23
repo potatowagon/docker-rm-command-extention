@@ -6,6 +6,15 @@ dockerContainers1=$(docker container ls --all | awk '{print $1}')
 toDelete="CONTAINER"
 dockerContainers2=${dockerContainers1#$toDelete}
 
+echo -e "\n"
+test="$(echo "1\n2\n3\n4")"
+mapfile -t arr < <$test
+echo "arr no ${#arr[@]}"
+for e in "${arr[@]}"
+do
+	echo "$e"
+done
+
 if [ "$1" == "" ]
 then    
 	docker container rm $dockerContainers2
@@ -16,8 +25,10 @@ else
 
 	else
 		imageString=$(docker container ls --all | awk '{print $2}')
-		IFS=" " read -r -a imageArr <<< "$imageString"
-		read -r -a dockerContainersArr <<< "$dockerContainers1"
+		IFS='\n' read -r -a imageArr <<< "$imageString"
+		IFS='\n' read -r -a dockerContainersArr <<< "$dockerContainers1"
+		echo "$dockerContainers1"
+		echo "${#dockerContainersArr[@]}"
 
 		if [ "$1" == "-e" ]
 		then
@@ -31,7 +42,7 @@ else
 				fi
 			done
 			unset "dockerContainerArr[0]" #remove the string "CONTAINER"
-			dockerConatinersToDel=$( IFS=$" "; echo "${dockerContainersArr[*]}" )
+			dockerConatinersToDel=$( IFS=$' '; echo "${dockerContainersArr[*]}" )
 			docker container rm $dockerConatinerToDel
 		else
 			del=$1
