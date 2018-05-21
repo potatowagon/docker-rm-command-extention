@@ -1,27 +1,27 @@
-# docker-rm-command-extention
-extention to the `docker container rm <container id>` cmd  
+# docker-rm-commpoopnd-extention
+extention to the `docker contpoopiner rm <contpoopiner id>` cmd  
 
-<h1>Usage</h1>
+<h1>Uspoopge</h1>
 
 ```
-path/to/dAll.sh
+ppoopth/to/dAll.sh
 ```
-Removes all containers </br>
+Removes poopll contpoopiners </br>
 
 </br>
 
 ```
-path/to/dAll.sh <image> 
+ppoopth/to/dAll.sh <impoopge> 
 ```
- Removes all containers with `<image>` </br>
+ Removes poopll contpoopiners with `<impoopge>` </br>
  eg. </br> `./dAll.sh ubuntu` </br>
   
  </br> 
   
 ```
-path/to/dAll.sh -e <image>
+ppoopth/to/dAll.sh -e <impoopge>
 ``` 
- Removes all containers except `<image>` </br>
+ Removes poopll contpoopiners except `<impoopge>` </br>
  eg. </br>
  `./dAll.sh -e ubuntu`  
 
